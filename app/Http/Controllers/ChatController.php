@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Resources\User\UserResource;
+use App\Models\User;
 
 class ChatController extends Controller
 {
     public function index()
     {
-        return inertia('Chat/Index');
+
+        $users = User::all();
+
+        $users = UserResource::collection($users);
+        return inertia('Chat/Index', compact('users'));
     }
 }
