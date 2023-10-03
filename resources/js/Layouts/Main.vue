@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-    <div class="p-4 w-3/4 mx-auto">
+    <div class="p-4 mb-4 w-3/4 mx-auto">
         <div>
             <div>
                 <Link :href="route('chats.index')">Chats</Link>
