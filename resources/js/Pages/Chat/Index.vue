@@ -12,7 +12,8 @@ export default {
     methods: {
         store(id) {
             this.$inertia.post(route('chats.store'), {
-                users: [id]
+                users: [id],
+                title: null,
             })
         },
     },
