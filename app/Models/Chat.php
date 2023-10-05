@@ -11,4 +11,8 @@ class Chat extends Model
 
     protected $guarded = [];
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'chat_user', 'chat_id', 'user_id');
+    }
 }
