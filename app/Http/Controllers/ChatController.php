@@ -39,4 +39,10 @@ class ChatController extends Controller
         $chat = ChatResource::make($chat)->resolve();
         return inertia('Chat/Show', compact('chat'));
     }
+
+    public function show(Chat $chat)
+    {
+        $chat = ChatResource::make($chat)->resolve();
+        return inertia('Chat/Show', compact('chat'));
+    }
 }

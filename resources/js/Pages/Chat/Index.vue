@@ -1,5 +1,6 @@
 <script>
 import Main from '@/Layouts/Main.vue';
+import { Link} from "@inertiajs/vue3";
 
 export default {
     name: "Index",
@@ -18,12 +19,21 @@ export default {
             })
         },
     },
+    components: {
+        Link
+    }
 }
 </script>
 
 <template>
     <div class="flex">
         <div class="w-1/2 p-4 mr-4 bg-white border border-gray-300">
+            <div v-for="chat in chat.data" :key="chat.id" class="items-center flex pb-2 mb-2 border-b border-gray-300">
+                <Link :href="route('chats.show', chat.id)" class="mr-2">
+                <p class="mr-2">{{ chat.id }}</p>
+                <p>{{ chat.title }}</p>
+                </Link>
+            </div>
         </div>
         <div class="w-1/2 p-4  bg-white border border-gray-300">
             <h3 class="text-yellow-950 mb-4">Users</h3>
