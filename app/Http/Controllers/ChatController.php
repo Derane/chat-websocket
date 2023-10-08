@@ -15,9 +15,10 @@ class ChatController extends Controller
     {
 
         $users = User::where('id', '!=', auth()->id())->get();
-
+        $chats = auth()->user()->chats()->get();
+        $chats = ChatResource::collection($chats)->resolve();
         $users = UserResource::collection($users);
-        return inertia('Chat/Index', compact('users'));
+        return inertia('Chat/Index', compact('chats', 'users'));
     }
 
     public function store(StoreRequest $request)

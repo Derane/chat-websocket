@@ -5,7 +5,8 @@ export default {
     name: "Index",
 
     props: [
-        'users'
+        'users',
+        'chats'
     ],
 
     layout: Main,
@@ -23,9 +24,6 @@ export default {
 <template>
     <div class="flex">
         <div class="w-1/2 p-4 mr-4 bg-white border border-gray-300">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque aut dignissimos eius
-            et eum ex illo impedit modi officia
-            omnis, porro, praesentium qui repellendus repudiandae sint, sunt tempora vel voluptatibus.
         </div>
         <div class="w-1/2 p-4  bg-white border border-gray-300">
             <h3 class="text-yellow-950 mb-4">Users</h3>
