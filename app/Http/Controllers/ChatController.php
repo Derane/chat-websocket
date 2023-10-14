@@ -36,13 +36,14 @@ class ChatController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
         }
-        $chat = ChatResource::make($chat)->resolve();
-        return inertia('Chat/Show', compact('chat'));
+        return redirect()->route('chats.show', $chat->id);
     }
 
     public function show(Chat $chat)
     {
+        $users = $chat->users()->where('users.id', '!=', auth()->id())->get();
+        $users = UserResource::collection($users)->resolve();
         $chat = ChatResource::make($chat)->resolve();
-        return inertia('Chat/Show', compact('chat'));
+        return inertia('Chat/Show', compact('chat', 'users'));
     }
 }
