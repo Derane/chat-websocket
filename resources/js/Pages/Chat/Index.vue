@@ -1,7 +1,5 @@
 <script>
-import Main from '@/Layouts/Main.vue';
-import { Link} from "@inertiajs/vue3";
-
+import {Link} from "@inertiajs/vue3";
 export default {
     name: "Index",
 
@@ -9,8 +7,9 @@ export default {
         'users',
         'chats'
     ],
-
-    layout: Main,
+components: {
+        Link
+    },
     methods: {
         store(id) {
             this.$inertia.post(route('chats.store'), {
@@ -19,19 +18,18 @@ export default {
             })
         },
     },
-    components: {
-        Link
-    }
+
 }
 </script>
 
 <template>
     <div class="flex">
-        <div class="w-1/2 p-4 mr-4 bg-white border border-gray-300">
-            <div v-for="chat in chat.data" :key="chat.id" class="items-center flex pb-2 mb-2 border-b border-gray-300">
-                <Link :href="route('chats.show', chat.id)" class="mr-2">
+        <h3 class="text-yellow-950 mb-4">Chats</h3>
+        <div v-if="chats" class="w-1/2 p-4 mr-4 bg-white border border-gray-300">
+            <div v-for="chat in chats" class="items-center flex pb-2 mb-2 border-b border-gray-300">
+                <Link :href="route('chats.show', chat.id)" class="flex">
                 <p class="mr-2">{{ chat.id }}</p>
-                <p>{{ chat.title }}</p>
+                    <p>{{chat.title ?? "Your chat"}}</p>
                 </Link>
             </div>
         </div>
