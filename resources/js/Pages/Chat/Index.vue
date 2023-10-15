@@ -1,5 +1,6 @@
 <script>
 import {Link} from "@inertiajs/vue3";
+
 export default {
     name: "Index",
 
@@ -7,8 +8,15 @@ export default {
         'users',
         'chats'
     ],
-components: {
+    components: {
         Link
+    },
+    data() {
+        return {
+            isGroup: false,
+            userIds: [],
+            title: ''
+        }
     },
     methods: {
         store(id) {
@@ -17,7 +25,27 @@ components: {
                 title: null,
             })
         },
+        storeGroup() {
+            this.$inertia.post(route('chats.store'), {
+                users: this.userIds,
+                title: this.title,
+            })
+        },
+        toggleUsers(id) {
+            let index = this.userIds.indexOf(id);
+            if (index === -1) {
+                this.userIds.push(id);
+            } else {
+                this.userIds.splice(index, 1);
+            }
+            console.log(this.userIds);
+        },
+        refreshUserIds() {
+            this.userIds = []
+            this.isGroup = false
+        }
     },
+
 
 }
 </script>
@@ -28,18 +56,32 @@ components: {
         <div v-if="chats" class="w-1/2 p-4 mr-4 bg-white border border-gray-300">
             <div v-for="chat in chats" class="items-center flex pb-2 mb-2 border-b border-gray-300">
                 <Link :href="route('chats.show', chat.id)" class="flex">
-                <p class="mr-2">{{ chat.id }}</p>
-                    <p>{{chat.title ?? "Your chat"}}</p>
+                    <p class="mr-2">{{ chat.id }}</p>
+                    <p>{{ chat.title ?? "Your chat" }}</p>
                 </Link>
             </div>
         </div>
         <div class="w-1/2 p-4  bg-white border border-gray-300">
-            <h3 class="text-yellow-950 mb-4">Users</h3>
+            <div class="flex items-center mb-4 justify-between">
+                <h3 class="text-yellow-950 ">Users</h3>
+                <a v-if="!isGroup" @click.prevent="isGroup = true" class="inline-block bg-indigo-600 text-white text-xs px-3 py-2 rounded-lg" href="#">Make group</a>
+                <div v-if="isGroup">
+                    <input class="h-8 mr-4 border border-green-200 rounded-full inline-block" type="text" placeholder="group title" v-model="title">
+                    <a @click.prevent="storeGroup" class="inline-block mr-2 bg-green-600 text-white text-xs px-3 py-2 rounded-lg" href="#">Go chat</a>
+                    <a @click.prevent="refreshUserIds" class="inline-block bg-indigo-600 text-white text-xs px-3 py-2 rounded-lg" href="#">X</a>
+                </div>
+
+            </div>
             <div v-for="user in users.data" :key="user.id" class="items-center flex pb-2 mb-2 border-b border-gray-300">
-                <p class="mr-2">ID: {{ user.id }}</p>
-                <p class="mr-4">Name: {{ user.name }}</p>
-                <a @click.prevent="store(user.id)"
-                   class="inline-block bg-indigo-600 text-white text-xs px-3 py-2 rounded-lg" href="#">Message</a>
+                <div class="items-center flex">
+                    <p class="mr-2">ID: {{ user.id }}</p>
+                    <p class="mr-4">Name: {{ user.name }}</p>
+                    <a @click.prevent="store(user.id)"
+                       class="inline-block bg-indigo-600 text-white text-xs px-3 py-2 rounded-lg" href="#">Message</a>
+                </div>
+                <div v-if="isGroup" class="ml-1">
+                    <input @click.prevent=toggleUsers(user.id) type="checkbox">
+                </div>
             </div>
         </div>
 

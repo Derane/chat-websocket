@@ -34,6 +34,7 @@ export default {
 <template>
     <div class="flex">
         <div class="w-3/4 p-4 mr-4 bg-white border border-gray-300">
+
             <h3 class="text-yellow-950 mb-4 text-lg">{{ chat.title ?? 'Your chat' }}</h3>
             <div v-if="messages" class="mb-4">
                 <div v-for="message in messages" :class="['mb-4',
