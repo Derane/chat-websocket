@@ -6,23 +6,25 @@ export default {
 
     props: [
         'chat',
-        'users'
+        'users',
+        'messages'
     ],
-    methods : {
+    methods: {
         store() {
             axios.post('/messages', {
                 chat_id: this.chat.id,
                 body: this.body
             }).then(res => {
-                    console.log(res);
+                    this.messages.push(res.data)
+
                 }
             )
         }
-        },
+    },
     data() {
-      return {
-          body: '',
-      }
+        return {
+            body: '',
+        }
     },
     layout: Main,
 
@@ -33,14 +35,24 @@ export default {
     <div class="flex">
         <div class="w-3/4 p-4 mr-4 bg-white border border-gray-300">
             <h3 class="text-yellow-950 mb-4 text-lg">{{ chat.title ?? 'Your chat' }}</h3>
-            <div class="mb-4">
+            <div v-if="messages" class="mb-4">
+                <div v-for="message in messages" :class="['mb-4',
+                    message.is_owner ? 'text-right': 'text-left']" >
+                    <div :class="['p-2 bg-sky-150 border border-sky-100 inline-block',
+                    message.is_owner ? 'bg-green-50': 'bg-sky-50 border-sky-100']">
+                        <p class="text-sm">{{ message.user_name }}</p>
+                        <p class="mb-2">{{ message.body }}</p>
+                        <p class="text-xs italic">{{ message.time }}</p>
+                    </div>
 
+                </div>
             </div>
             <div>
                 <a href="#" @click.prevent="store()" class="text-yellow-950 mb-4 text-lg">Send message</a>
                 <div>
                     <div class="mb-4">
-                    <input placeholder="message" class="rounded-full border border-gray-300" type="text" v-model="body">
+                        <input placeholder="message" class="rounded-full border border-gray-300" type="text"
+                               v-model="body">
                     </div>
                     <div>
                         <a @click.prevent="store"
@@ -56,7 +68,7 @@ export default {
                 <p class="mr-4">Name: {{ user.name }}</p>
             </div>
         </div>
-        </div>
+    </div>
 
 </template>
 
