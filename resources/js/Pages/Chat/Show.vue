@@ -10,7 +10,13 @@ export default {
     ],
     methods : {
         store() {
-            axios.post('/messages', {})
+            axios.post('/messages', {
+                chat_id: this.chat.id,
+                body: this.body
+            }).then(res => {
+                    console.log(res);
+                }
+            )
         }
         },
     data() {
@@ -31,13 +37,14 @@ export default {
 
             </div>
             <div>
-                <h3 @click.prevent="store" class="text-yellow-950 mb-4 text-lg">Send message</h3>
+                <a href="#" @click.prevent="store()" class="text-yellow-950 mb-4 text-lg">Send message</a>
                 <div>
                     <div class="mb-4">
                     <input placeholder="message" class="rounded-full border border-gray-300" type="text" v-model="body">
                     </div>
                     <div>
-                        <a class="inline-block bg-indigo-600 text-white text-xs px-3 py-2 rounded-lg" href="#">Send</a>
+                        <a @click.prevent="store"
+                           class="inline-block bg-indigo-600 text-white text-xs px-3 py-2 rounded-lg" href="#">Send</a>
                     </div>
                 </div>
             </div>
