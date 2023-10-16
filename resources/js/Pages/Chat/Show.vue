@@ -21,6 +21,11 @@ export default {
             )
         }
     },
+    created() {
+      window.Echo.channel('store-message').listen('.store-message',res => {
+        this.messages.push(res.message)
+      })
+    },
     data() {
         return {
             body: '',
