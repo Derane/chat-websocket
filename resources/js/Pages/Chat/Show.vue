@@ -22,7 +22,7 @@ export default {
         }
     },
     created() {
-      window.Echo.channel('store-message').listen('.store-message',res => {
+      window.Echo.channel(`store-message.${this.chat.id}`).listen('.store-message', res => {
         this.messages.push(res.message)
       })
     },

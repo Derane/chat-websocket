@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events\StoreMessageEvent;
+use App\Events\StoreMessageStatusEvent;
 use App\Http\Requests\Message\StoreRequest;
 use App\Http\Resources\Message\MessageResource;
 use App\Models\MessageStatus;
 use Illuminate\Support\Facades\DB;
-use PDO;
 
 class MessageController extends Controller
 {
@@ -27,7 +27,11 @@ class MessageController extends Controller
                     'message_id' => $message->id,
                     'chat_id' => $data['chat_id'],
                 ]);
+                $count = MessageStatus::where('chat_id', $data['chat_id'])
+                    ->where('user_id', auth()->id())->where('is_read', false)->count();
+                broadcast(new StoreMessageStatusEvent($count))->toOthers();
             }
+
 
             broadcast(new StoreMessageEvent($message))->toOthers();
             DB::commit();
