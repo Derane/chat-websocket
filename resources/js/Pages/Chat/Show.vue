@@ -22,9 +22,9 @@ export default {
         }
     },
     created() {
-      window.Echo.channel(`store-message.${this.chat.id}`).listen('.store-message', res => {
-        this.messages.push(res.message)
-      })
+        window.Echo.channel(`store-message.${this.chat.id}`).listen('.store-message', res => {
+            this.messages.push(res.message)
+        })
     },
     data() {
         return {
@@ -43,7 +43,7 @@ export default {
             <h3 class="text-yellow-950 mb-4 text-lg">{{ chat.title ?? 'Your chat' }}</h3>
             <div v-if="messages" class="mb-4">
                 <div v-for="message in messages" :class="['mb-4',
-                    message.is_owner ? 'text-right': 'text-left']" >
+                    message.is_owner ? 'text-right': 'text-left']">
                     <div :class="['p-2 bg-sky-150 border border-sky-100 inline-block',
                     message.is_owner ? 'bg-green-50': 'bg-sky-50 border-sky-100']">
                         <p class="text-sm">{{ message.user_name }}</p>

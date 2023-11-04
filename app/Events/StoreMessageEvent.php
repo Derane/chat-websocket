@@ -3,11 +3,8 @@
 namespace App\Events;
 
 use App\Http\Resources\Message\MessageBroadcastResource;
-use App\Http\Resources\Message\MessageResource;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -38,12 +35,13 @@ class StoreMessageEvent implements ShouldBroadcast
         ];
 
     }
+
     public function broadcastAs(): string
     {
         return 'store-message';
     }
 
-    public function broadcastWith():array
+    public function broadcastWith(): array
     {
         return [
             'message' => MessageBroadcastResource::make($this->message)->resolve(),

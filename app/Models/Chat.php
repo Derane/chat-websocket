@@ -24,7 +24,7 @@ class Chat extends Model
     public function unreadableMessageStatuses()
     {
         return $this->hasMany(MessageStatus::class, 'chat_id', 'id')
-            ->where('user_id',  auth()->id())
+            ->where('user_id', auth()->id())
             ->where('is_read', false);
     }
 }

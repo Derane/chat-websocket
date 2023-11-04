@@ -46,4 +46,4 @@ Route::middleware('auth')->group(function () {
 Route::get('/test-ws', function () {
     event(new \App\Events\WsEvent());
 });
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
