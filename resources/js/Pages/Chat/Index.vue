@@ -18,6 +18,17 @@ export default {
             title: ''
         }
     },
+    created() {
+        window.Echo.channel(`users.${this.$page.props.auth.user.id}`)
+            .listen('.store-message-status', res => {
+                this.chats.filter(chat => {
+                    if (chat.id === res.chat_id) {
+                        console.log(res);
+                        chat.unreadable_count++
+                    }
+                })
+            })
+    },
     methods: {
         store(id) {
             this.$inertia.post(route('chats.store'), {

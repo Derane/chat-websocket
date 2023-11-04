@@ -16,7 +16,7 @@ export default {
                 body: this.body
             }).then(res => {
                     this.messages.push(res.data)
-
+                    this.body = ''
                 }
             )
         }
