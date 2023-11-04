@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\StoreMessageEvent;
 use App\Events\StoreMessageStatusEvent;
 use App\Http\Requests\Message\StoreRequest;
+use App\Http\Requests\MessageStatus\UpdateRequest;
 use App\Http\Resources\Message\MessageResource;
 use App\Models\MessageStatus;
 use Illuminate\Support\Facades\DB;
@@ -43,4 +44,6 @@ class MessageController extends Controller
         }
         return MessageResource::make($message)->resolve();
     }
+
+
 }
