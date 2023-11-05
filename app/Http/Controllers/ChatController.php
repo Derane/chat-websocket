@@ -15,7 +15,12 @@ class ChatController extends Controller
     public function index()
     {
         $users = User::where('id', '!=', auth()->id())->get();
-        $chats = auth()->user()->chats()->has('messages')->withCount('unreadableMessageStatuses')->get();
+        $chats = auth()->user()
+            ->chats()
+            ->has('messages')
+            ->with('lastMessage')
+            ->withCount('unreadableMessageStatuses')
+            ->get();
         $chats = ChatResource::collection($chats)->resolve();
         $users = UserResource::collection($users);
         return inertia('Chat/Index', compact('chats', 'users'));
