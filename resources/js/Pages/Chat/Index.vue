@@ -67,15 +67,26 @@ export default {
         <div v-if="chats" class="w-1/2 p-4 mr-4 bg-white border border-gray-300">
             <div v-for="chat in chats" class="pb-2 mb-2 border-b border-gray-300">
                 <Link :href="route('chats.show', chat.id)">
-                    <div class="flex justify-between">
-                        <div class="flex">
-                            <p class="mr-2">{{ chat.id }}</p>
-                            <p>{{ chat.title ?? "Your chat" }}</p>
+                    <div>
+                        <div>
+                            <div class="flex">
+                                <p class="mr-2">{{ chat.id }}</p>
+                                <p>{{ chat.title ?? "Your chat" }}</p>
+                            </div>
+                            <div :class="['-2 flex justify-between items-center',
+                           chat.unreadable_count !== 0 ? 'bg-sky-50' : '']">
+                                <div class="text-sm">
+                                    <p class="text-gray-600">{{ chat.last_message.user_name }}</p>
+                                    <p class="mb-2 text-gray-500">{{ chat.last_message.body }}</p>
+                                    <p class="italic text-gray-400">{{ chat.last_message.time }}</p>
+                                </div>
+                                <div v-if="chat.unreadable_count !== 0">
+                                    <p class="text-xs rounded-full bg-sky-500 text-white px-2 py-1">
+                                        {{ chat.unreadable_count }}</p>
+                                </div>
+                            </div>
                         </div>
-                        <div v-if="chat.unreadable_count !== 0">
-                            <p class="text-xs rounded-full bg-sky-500 text-white px-2 py-1">
-                                {{ chat.unreadable_count }}</p>
-                        </div>
+
                     </div>
                 </Link>
             </div>

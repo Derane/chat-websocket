@@ -30,7 +30,7 @@ class MessageController extends Controller
                 ]);
                 $count = MessageStatus::where('chat_id', $data['chat_id'])
                     ->where('user_id', auth()->id())->where('is_read', false)->count();
-                broadcast(new StoreMessageStatusEvent($count, $data['chat_id'], $user->id))->toOthers();
+                broadcast(new StoreMessageStatusEvent($count, $data['chat_id'], $user->id, $message))->toOthers();
             }
 
 
