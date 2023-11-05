@@ -3,13 +3,13 @@
 namespace App\Events;
 
 use App\Http\Resources\Message\MessageResource;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class   StoreMessageStatusEvent implements ShouldBroadcast
+class   StoreMessageStatusEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -37,7 +37,7 @@ class   StoreMessageStatusEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('users.' . $this->userId),
+            new PrivateChannel('users.' . $this->userId),
         ];
 
     }
