@@ -46,9 +46,13 @@ class ChatController extends Controller
 
     public function show(Chat $chat)
     {
+        $page = request('page') ?? 1;
+
         $users = $chat->users()->where('users.id', '!=', auth()->id())->get();
 
-        $messages = $chat->messages()->with('user')->get();
+        $messages = $chat->messages()->with('user')
+            ->orderByDesc('created_at')
+            ->paginate(5, '*', 'page', $page);
         $messages = MessageResource::collection($messages)->resolve();
         $users = UserResource::collection($users)->resolve();
         $chat->unreadableMessageStatuses()->update(['is_read' => true]);

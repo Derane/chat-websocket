@@ -15,7 +15,7 @@ export default {
                 chat_id: this.chat.id,
                 body: this.body
             }).then(res => {
-                    this.messages.push(res.data)
+                    this.messages.unshift(res.data)
                     this.body = ''
                 }
             )
@@ -48,7 +48,7 @@ export default {
 
             <h3 class="text-yellow-950 mb-4 text-lg">{{ chat.title ?? 'Your chat' }}</h3>
             <div v-if="messages" class="mb-4">
-                <div v-for="message in messages" :class="['mb-4',
+                <div v-for="message in messages.slice().reverse()" :class="['mb-4',
                     message.is_owner ? 'text-right': 'text-left']">
                     <div :class="['p-2 bg-sky-150 border border-sky-100 inline-block',
                     message.is_owner ? 'bg-green-50': 'bg-sky-50 border-sky-100']">
