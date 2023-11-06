@@ -54,6 +54,9 @@ class ChatController extends Controller
             ->orderByDesc('created_at')
             ->paginate(5, '*', 'page', $page);
         $messages = MessageResource::collection($messages)->resolve();
+
+        if ($page > 1)
+            return $messages;
         $users = UserResource::collection($users)->resolve();
         $chat->unreadableMessageStatuses()->update(['is_read' => true]);
         $chat = ChatResource::make($chat)->resolve();

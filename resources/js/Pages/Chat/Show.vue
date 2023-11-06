@@ -19,7 +19,13 @@ export default {
                     this.body = ''
                 }
             )
-        }
+        },
+       getMessages() {
+            axios.get(`/chats/${this.chat.id}?page=${++this.page}`)
+                .then(res => {
+                    this.messages.push(...res.data)
+                })
+       }
     },
     created() {
         window.Echo.channel(`store-message.${this.chat.id}`).listen('.store-message', res => {
@@ -35,6 +41,7 @@ export default {
     data() {
         return {
             body: '',
+            page: 1,
         }
     },
     layout: Main,
@@ -48,6 +55,9 @@ export default {
 
             <h3 class="text-yellow-950 mb-4 text-lg">{{ chat.title ?? 'Your chat' }}</h3>
             <div v-if="messages" class="mb-4">
+                <div class="text-center mb-2">
+                    <a @click.prevent="getMessages" href="#" class="inline-block bg-sky-600 text-white text-xs px-3 py-2 rounded-lg">Load more</a>
+                </div>
                 <div v-for="message in messages.slice().reverse()" :class="['mb-4',
                     message.is_owner ? 'text-right': 'text-left']">
                     <div :class="['p-2 bg-sky-150 border border-sky-100 inline-block',
