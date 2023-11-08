@@ -7,7 +7,8 @@ export default {
     props: [
         'chat',
         'users',
-        'messages'
+        'messages',
+        'isLastPage'
     ],
     methods: {
         store() {
@@ -23,7 +24,8 @@ export default {
        getMessages() {
             axios.get(`/chats/${this.chat.id}?page=${++this.page}`)
                 .then(res => {
-                    this.messages.push(...res.data)
+                    this.messages.push(...res.data.messages)
+                    this.page.props.isLastPage = res.data.is_last_page
                 })
        }
     },
@@ -55,7 +57,7 @@ export default {
 
             <h3 class="text-yellow-950 mb-4 text-lg">{{ chat.title ?? 'Your chat' }}</h3>
             <div v-if="messages" class="mb-4">
-                <div class="text-center mb-2">
+                <div v-if="!isLastPage" class="text-center mb-2">
                     <a @click.prevent="getMessages" href="#" class="inline-block bg-sky-600 text-white text-xs px-3 py-2 rounded-lg">Load more</a>
                 </div>
                 <div v-for="message in messages.slice().reverse()" :class="['mb-4',

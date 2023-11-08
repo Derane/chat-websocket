@@ -8,6 +8,7 @@ use App\Http\Resources\Message\MessageResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Chat;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
@@ -55,13 +56,20 @@ class ChatController extends Controller
             ->paginate(5, '*', 'page', $page);
         $messages = MessageResource::collection($messages)->resolve();
 
-        if ($page > 1)
-            return $messages;
+        $isLastPage = $page == $messages->lastPage();
+        if ($page > 1) {
+
+            return response()->json([
+                'is_last_page' => $isLastPage,
+                'messages' => $messages
+            ]);
+
+        }
         $users = UserResource::collection($users)->resolve();
         $chat->unreadableMessageStatuses()->update(['is_read' => true]);
         $chat = ChatResource::make($chat)->resolve();
 
 
-        return inertia('Chat/Show', compact('chat', 'users', 'messages'));
+        return inertia('Chat/Show', compact('chat', 'users', 'messages', 'isLastPage'));
     }
 }
